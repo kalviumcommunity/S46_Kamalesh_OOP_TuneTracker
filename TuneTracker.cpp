@@ -13,10 +13,10 @@ private:
 public:
     void setData(string t, string a, string g)
     {
-        title = t;
-        artist = a;
-        genre = g;
-        isFavorite = false;
+        this->title = t;
+        this->artist = a;
+        this->genre = g;
+        this->isFavorite = false;
     }
 
     string getTitle() const
