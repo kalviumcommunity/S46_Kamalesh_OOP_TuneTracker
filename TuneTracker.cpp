@@ -9,6 +9,8 @@ private:
     string artist;
     string genre;
     bool isFavorite;
+    
+    static int totalSongs;
 
 public:
     void setData(string t, string a, string g)
@@ -17,6 +19,7 @@ public:
         this->artist = a;
         this->genre = g;
         this->isFavorite = false;
+        totalSongs++;
     }
 
     string getTitle() const
@@ -50,16 +53,21 @@ public:
     }
 };
 
+int Song::totalSongs = 0;  // Initialize the static variable
+
 class Playlist
 {
 private:
     string name;
     Song** songs;
     int songCount;
+    
+    static int totalPlaylists; 
 
 public:
     Playlist() : songCount(0) {
         songs = new Song*[10];
+        totalPlaylists++;
     }
 
     void setName(string n)
@@ -111,6 +119,8 @@ public:
     }
 };
 
+int Playlist::totalPlaylists = 0;  // Initialize the static variable
+
 class Library
 {
 private:
@@ -118,6 +128,8 @@ private:
     Playlist** playlists; // Fixed array of playlists
     int songCount;
     int playlistCount;
+    
+    static int totalLibraries;
 
 public:
     Library()
@@ -126,6 +138,7 @@ public:
         playlistCount = 0;
         songs = new Song*[100];
         playlists = new Playlist*[10];
+        totalLibraries++;
     }
 
     void addSong(Song* song)
@@ -196,6 +209,8 @@ public:
     }
 };
 
+int Library::totalLibraries = 0;  // Initialize the static variable
+
 int main()
 {
     Library library;
@@ -225,6 +240,7 @@ int main()
 
     cout << "\nFavorites:\n";
     library.displayFavorites();
+    
 
     return 0;
 }
