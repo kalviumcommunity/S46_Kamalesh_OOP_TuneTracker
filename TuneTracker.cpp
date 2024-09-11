@@ -13,13 +13,21 @@ private:
     static int totalSongs;
 
 public:
+
+    Song(){
+        totalSongs++;
+    }
+    
+    static int getTotalSongs() {
+        return totalSongs;
+    }
+    
     void setData(string t, string a, string g)
     {
         this->title = t;
         this->artist = a;
         this->genre = g;
         this->isFavorite = false;
-        totalSongs++;
     }
 
     string getTitle() const
@@ -68,6 +76,10 @@ public:
     Playlist() : songCount(0) {
         songs = new Song*[10];
         totalPlaylists++;
+    }
+    
+    static int getTotalPlaylists(){
+        return totalPlaylists;
     }
 
     void setName(string n)
@@ -139,6 +151,10 @@ public:
         songs = new Song*[100];
         playlists = new Playlist*[10];
         totalLibraries++;
+    }
+    
+    static int getTotalLibraries(){
+        return totalLibraries;
     }
 
     void addSong(Song* song)
@@ -241,6 +257,10 @@ int main()
     cout << "\nFavorites:\n";
     library.displayFavorites();
     
+
+    cout << "\nTotal Songs: " << Song::getTotalSongs() << endl;
+    cout << "Total Playlists: " << Playlist::getTotalPlaylists() << endl;
+    cout << "Total Libraries: " << Library::getTotalLibraries() << endl;
 
     return 0;
 }
