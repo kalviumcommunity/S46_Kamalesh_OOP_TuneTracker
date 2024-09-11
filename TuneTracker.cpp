@@ -54,22 +54,24 @@ class Playlist
 {
 private:
     string name;
-    Song songs[100]; // Fixed array of songs
+    Song** songs;
     int songCount;
 
 public:
-    Playlist() : songCount(0) {}
+    Playlist() : songCount(0) {
+        songs = new Song*[10];
+    }
 
     void setName(string n)
     {
         this->name = n;
     }
 
-    void addSong(Song song)
+    void addSong(Song* song)
     { 
         if (songCount < 100)
         {
-            this->songs[songCount] = song;
+            songs[songCount] = song;
             songCount++;
         }
         else
@@ -82,8 +84,9 @@ public:
     { 
         for (int i = 0; i < songCount; i++)
         {
-            if (songs[i].getTitle() == title)
+            if (songs[i]->getTitle() == title)
             {
+                delete songs[i];
                 for (int j = i; j < songCount - 1; j++)
                 {
                     songs[j] = songs[j + 1];
@@ -98,7 +101,7 @@ public:
     {
         for (int i = 0; i < songCount; i++)
         {
-            cout << songs[i].getTitle() << " by " << songs[i].getArtist() << endl;
+            cout << songs[i]->getTitle() << " by " << songs[i]->getArtist() << endl;
         }
     }
 
@@ -111,8 +114,8 @@ public:
 class Library
 {
 private:
-    Song songs[100];        // Fixed array of songs
-    Playlist playlists[10]; // Fixed array of playlists
+    Song** songs;        // Fixed array of songs
+    Playlist** playlists; // Fixed array of playlists
     int songCount;
     int playlistCount;
 
@@ -121,9 +124,11 @@ public:
     {
         songCount = 0;
         playlistCount = 0;
+        songs = new Song*[100];
+        playlists = new Playlist*[10];
     }
 
-    void addSong(Song song)
+    void addSong(Song* song)
     { 
         if (songCount < 100)
         {
@@ -140,7 +145,8 @@ public:
     { 
         if (playlistCount < 10)
         {
-            playlists[playlistCount].setName(name);
+            playlists[playlistCount] = new Playlist();
+            playlists[playlistCount]->setName(name);
             playlistCount++;
         }
         else
@@ -149,13 +155,13 @@ public:
         }
     }
 
-    void addSongToPlaylist(string playlistName, Song song)
+    void addSongToPlaylist(string playlistName, Song* song)
     { 
         for (int i = 0; i < playlistCount; i++)
         {
-            if (playlists[i].getName() == playlistName)
+            if (playlists[i]->getName() == playlistName)
             {
-                playlists[i].addSong(song);
+                playlists[i]->addSong(song);
                 break;
             }
         }
@@ -165,7 +171,7 @@ public:
     {
         for (int i = 0; i < songCount; i++)
         {
-            cout << songs[i].getTitle() << " by " << songs[i].getArtist() << " [" << songs[i].getGenre() << "]" << endl;
+            cout << songs[i]->getTitle() << " by " << songs[i]->getArtist() << " [" << songs[i]->getGenre() << "]" << endl;
         }
     }
 
@@ -173,8 +179,8 @@ public:
     {
         for (int i = 0; i < playlistCount; i++)
         {
-            cout << "Playlist: " << playlists[i].getName() << endl;
-            playlists[i].displaySongs();
+            cout << "Playlist: " << playlists[i]->getName() << endl;
+            playlists[i]->displaySongs();
         }
     }
 
@@ -182,9 +188,9 @@ public:
     {
         for (int i = 0; i < songCount; i++)
         {
-            if (songs[i].getIsFavorite())
+            if (songs[i]->getIsFavorite())
             {
-                cout << songs[i].getTitle() << " by " << songs[i].getArtist() << endl;
+                cout << songs[i]->getTitle() << " by " << songs[i]->getArtist() << endl;
             }
         }
     }
@@ -194,12 +200,15 @@ int main()
 {
     Library library;
 
-    Song song1, song2, song3;
-    song1.setData("Song 1", "Artist 1", "Rock");
-    song2.setData("Song 2", "Artist 2", "Pop");
-    song3.setData("Song 3", "Artist 1", "Jazz");
+    Song* song1 = new Song();
+    Song* song2 = new Song();
+    Song* song3 = new Song();
+    
+    song1->setData("Song 1", "Artist 1", "Rock");
+    song2->setData("Song 2", "Artist 2", "Pop");
+    song3->setData("Song 3", "Artist 1", "Jazz");
 
-    song1.markAsFavorite();
+    song1->markAsFavorite();
 
     library.addSong(song1);
     library.addSong(song2);
