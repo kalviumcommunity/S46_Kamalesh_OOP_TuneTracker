@@ -2,8 +2,22 @@
 #include <string>
 using namespace std;
 
-class Song
-{
+// Base class
+class Media {
+protected:
+    string name;
+
+public:
+    string getName() const {
+        return name;
+    }
+    void setName(string n) {
+        name = n;
+    }
+};
+
+// Derived class Song
+class Song : public Media {
 private:
     string title;
     string artist;
@@ -13,11 +27,11 @@ private:
     static int totalSongs;
 
 public:
-
     // Default constructor
-    Song(){
+    Song() {
         totalSongs++;
     }
+
     // Parameterized constructor
     Song(string t, string a, string g) : title(t), artist(a), genre(g), isFavorite(false) {
         totalSongs++;
@@ -27,71 +41,63 @@ public:
     ~Song() {
         cout << "Destructor called for Song: " << title << endl;
     }
-    
+
     static int getTotalSongs() {
         return totalSongs;
     }
-    
-    void setData(string t, string a, string g)
-    {
+
+    void setData(string t, string a, string g) {
         this->title = t;
         this->artist = a;
         this->genre = g;
         this->isFavorite = false;
     }
 
-    string getTitle() const
-    {
+    string getTitle() const {
         return title;
     }
 
-    string getArtist() const
-    {
+    string getArtist() const {
         return artist;
     }
 
-    string getGenre() const
-    {
+    string getGenre() const {
         return genre;
     }
 
-    bool getIsFavorite() const
-    {
+    bool getIsFavorite() const {
         return isFavorite;
     }
 
-    void markAsFavorite()
-    {
+    void markAsFavorite() {
         isFavorite = true;
     }
 
-    void unmarkAsFavorite()
-    {
+    void unmarkAsFavorite() {
         isFavorite = false;
     }
 };
 
 int Song::totalSongs = 0;  // Initialize the static variable
 
-class Playlist
-{
+// Derived class Playlist
+class Playlist : public Media {
 private:
-    string name;
     Song** songs;
     int songCount;
     
     static int totalPlaylists; 
 
 public:
-
     // Default constructor
     Playlist() : songCount(0) {
         songs = new Song*[10];
         totalPlaylists++;
     }
-    
+
     // Parameterized constructor
-    Playlist(string n) : name(n), songCount(0) {
+    Playlist(string n) : songCount(0) {
+        setName(n); // Using the base class method
         songs = new Song*[10];
         totalPlaylists++;
     }
@@ -102,40 +108,27 @@ public:
             delete songs[i];
         }
         delete[] songs;
-        cout << "Destructor called for Playlist: " << name << endl;
+        cout << "Destructor called for Playlist: " << getName() << endl;
     }
-    
+
     static int getTotalPlaylists(){
         return totalPlaylists;
     }
 
-    void setName(string n)
-    {
-        this->name = n;
-    }
-
-    void addSong(Song* song)
-    { 
-        if (songCount < 100)
-        {
+    void addSong(Song* song) {
+        if (songCount < 100) {
             songs[songCount] = song;
             songCount++;
-        }
-        else
-        {
+        } else {
             cout << "Playlist is full!" << endl;
         }
     }
 
-    void removeSong(string title)
-    { 
-        for (int i = 0; i < songCount; i++)
-        {
-            if (songs[i]->getTitle() == title)
-            {
+    void removeSong(string title) { 
+        for (int i = 0; i < songCount; i++) {
+            if (songs[i]->getTitle() == title) {
                 delete songs[i];
-                for (int j = i; j < songCount - 1; j++)
-                {
+                for (int j = i; j < songCount - 1; j++) {
                     songs[j] = songs[j + 1];
                 }
                 songCount--;
@@ -144,17 +137,10 @@ public:
         }
     }
 
-    void displaySongs() const
-    {
-        for (int i = 0; i < songCount; i++)
-        {
+    void displaySongs() const {
+        for (int i = 0; i < songCount; i++) {
             cout << songs[i]->getTitle() << " by " << songs[i]->getArtist() << endl;
         }
-    }
-
-    string getName() const
-    {
-        return name;
     }
 };
 
