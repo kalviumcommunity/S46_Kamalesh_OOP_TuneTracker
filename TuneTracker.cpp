@@ -14,8 +14,18 @@ private:
 
 public:
 
+    // Default constructor
     Song(){
         totalSongs++;
+    }
+    // Parameterized constructor
+    Song(string t, string a, string g) : title(t), artist(a), genre(g), isFavorite(false) {
+        totalSongs++;
+    }
+
+    // Destructor
+    ~Song() {
+        cout << "Destructor called for Song: " << title << endl;
     }
     
     static int getTotalSongs() {
@@ -73,9 +83,26 @@ private:
     static int totalPlaylists; 
 
 public:
+
+    // Default constructor
     Playlist() : songCount(0) {
         songs = new Song*[10];
         totalPlaylists++;
+    }
+    
+    // Parameterized constructor
+    Playlist(string n) : name(n), songCount(0) {
+        songs = new Song*[10];
+        totalPlaylists++;
+    }
+
+    // Destructor
+    ~Playlist() {
+        for (int i = 0; i < songCount; i++) {
+            delete songs[i];
+        }
+        delete[] songs;
+        cout << "Destructor called for Playlist: " << name << endl;
     }
     
     static int getTotalPlaylists(){
@@ -144,6 +171,8 @@ private:
     static int totalLibraries;
 
 public:
+
+    //Default Constructor
     Library()
     {
         songCount = 0;
@@ -151,6 +180,21 @@ public:
         songs = new Song*[100];
         playlists = new Playlist*[10];
         totalLibraries++;
+    }
+
+    // Destructor
+    ~Library() {
+        for (int i = 0; i < songCount; i++) {
+            delete songs[i];
+        }
+        delete[] songs;
+
+        for (int i = 0; i < playlistCount; i++) {
+            delete playlists[i];
+        }
+        delete[] playlists;
+
+        cout << "Destructor called for Library" << endl;
     }
     
     static int getTotalLibraries(){
