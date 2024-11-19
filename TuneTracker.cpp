@@ -35,6 +35,7 @@ public:
     // Parameterized constructor
     Song(string t, string a, string g) : title(t), artist(a), genre(g), isFavorite(false) {
         totalSongs++;
+        setName(t); // from the base class
     }
 
     // Destructor
@@ -51,6 +52,7 @@ public:
         this->artist = a;
         this->genre = g;
         this->isFavorite = false;
+        setName(t); //from the base class
     }
 
     string getTitle() const {
@@ -230,7 +232,7 @@ public:
     {
         for (int i = 0; i < songCount; i++)
         {
-            cout << songs[i]->getTitle() << " by " << songs[i]->getArtist() << " [" << songs[i]->getGenre() << "]" << endl;
+            cout << songs[i]->getName() << " by " << songs[i]->getArtist() << " [" << songs[i]->getGenre() << "]" << endl;
         }
     }
 
